@@ -30,6 +30,11 @@ app.get('/:key', cache.route(), (req, res) => {
   res.send(req.params.key);
 });
 
-app.listen(PORT, () => {
-  process.stdout.write(`server listening on port ${PORT}`);
-});
+
+if(!module.parent){
+  app.listen(PORT, () => {
+    process.stdout.write(`server listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
