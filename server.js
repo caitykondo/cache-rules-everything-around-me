@@ -26,9 +26,9 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/:key', cache.route(), (req, res) => {
-  res.send(req.params.key);
-});
+// app.get('/:key', cache.route(), (req, res) => {
+//   res.send(req.params.key);
+// });
 
 
 if(!module.parent){

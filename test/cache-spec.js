@@ -11,6 +11,16 @@ describe('sanity', () => {
   });
 });
 
-if(!module.parent){
-    app.listen(3000);
-}
+describe('/slow', () => {
+
+  it('should eventually return a page', done => {
+    agent.get('/slow')
+      .expect('Content-Type', /html/)
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        res.text.should.equal('<h1>THIS IS THE API ROUTE</h1><p>super slow :<</p>');
+      });
+      done();
+  });
+});
