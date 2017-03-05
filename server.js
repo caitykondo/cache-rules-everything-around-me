@@ -20,26 +20,24 @@ app.use(bodyParser.json());
 // server.use(creamCache.init()); /* student implements this */
 
 function checkCache(req, res, next) {
-  console.log('checking cache');
-  let path = req.route.path;
-  client.get(req.route.path, (err, reply) =>{
+  client.get(req.originalUrl, (err, reply) =>{
     if(reply !== null){
       console.log('found in cache');
       res.send(reply);
     }else{
       next();
-      // render the page and store in cache
     }
-
   });
 }
 
+app.use(checkCache);
+
 app.use('/slow', slow);
 
-app.get('/', checkCache, (req, res) => {
+app.get('/', (req, res) => {
   res.render('index', (err, html) => {
     console.log('setting to cache');
-    client.set(req.route.path, html);
+    client.set(req.originalUrl, html);
   });
 });
 
