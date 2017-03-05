@@ -19,17 +19,16 @@ app.set('view engine', '.hbs');
 app.use(bodyParser.json());
 // server.use(creamCache.init()); /* student implements this */
 
-// function checkCache(req, res, next) {
-//   client.get(req.originalUrl, (err, reply) =>{
-//     if(reply !== null){
-//       console.log('found in cache');
-//       res.send(reply);
-//     }else{
-//       next();
-//     }
-//   });
-// }
-// app.use(checkCache);
+function checkCache(req, res,next) {
+  client.get(req.originalUrl, (err, reply) =>{
+    if(reply !== null){
+      console.log('found in cache');
+      res.send(reply);
+    }else{
+      next();
+    }
+  });
+}
 
 function countViews(req, res, next) {
   client.get(`${req.originalUrl}_counter`, (err, reply) => {
@@ -43,6 +42,7 @@ function countViews(req, res, next) {
 }
 
 app.use(countViews);
+app.use(checkCache);
 
 app.use('/slow', slow);
 
